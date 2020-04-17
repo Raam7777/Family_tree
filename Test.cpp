@@ -94,6 +94,12 @@ TEST_CASE("Remove function"){//21
     CHECK( T.relation("Rivka") == string("unrelated"));
     CHECK( T.relation("Avraham") == string("unrelated"));
     CHECK( T.relation("Terah") == string("unrelated"));
+    CHECK_THROWS(T.remove("Yaakov"));
+    CHECK_THROWS(T.remove("Rachel"));
+    CHECK_THROWS(T.remove("Isaac"));
+    CHECK_THROWS(T.remove("Rivka"));
+    CHECK_THROWS(T.remove("Avraham"));
+    CHECK_THROWS(T.remove("Terah"));
 
     T = buildTree();
     T.remove("Isaac");
@@ -103,6 +109,11 @@ TEST_CASE("Remove function"){//21
     CHECK( T.relation("Rivka") == string("unrelated"));
     CHECK( T.relation("Avraham") == string("unrelated"));
     CHECK( T.relation("Terah") == string("unrelated"));
+    CHECK_THROWS(T.remove("Isaac"));
+    CHECK_THROWS(T.remove("Rivka"));
+    CHECK_THROWS(T.remove("Avraham"));
+    CHECK_THROWS(T.remove("Terah"));
+
 
     T = buildTree();
     T.addMother("Isaac", "sara").addMother("sara", "milka").addFather("sara", "haran");
@@ -116,11 +127,14 @@ TEST_CASE("Remove function"){//21
     CHECK( T.relation("Terah") == string("great-great-grandfather"));
     CHECK( T.relation("haran") == string("unrelated"));
     CHECK( T.relation("milka") == string("unrelated"));
+    CHECK_THROWS(T.remove("milka"));
+    CHECK_THROWS(T.remove("haran"));
+    CHECK_THROWS(T.remove("sara"));
 
 
 }
 
-TEST_CASE("Remove function"){
+TEST_CASE("new tree function"){
     Tree T ("Yosef");
     T.addFather("Yosef","Yaakov").addFather("Yaakov","Isaac").addFather("Isaac","Avraham").addFather("Avraham","Terah");
     CHECK( T.relation("Yaakov") == string("father"));
