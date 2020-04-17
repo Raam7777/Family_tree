@@ -37,3 +37,6 @@
 ולכן כל שינוי שתבצעו לקבצים הקיימים לא ישפיע על הבדיקה האוטומטית.
 
 </div>
+git add .
+git commit -m "init commit4"
+git push -u origin master
