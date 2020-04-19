@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "FamilyTree.hpp"
 
@@ -9,6 +10,9 @@ node::node(string name){
     this->name = name;
     this->father = nullptr;
     this->mother = nullptr;
+    this->gender = 0;
+    this->level = 0;
+
 }
 
 Tree::Tree(string name){
@@ -68,6 +72,8 @@ Tree& Tree::addFather(string son, string father){
 
     if(searchSon->father == nullptr){
         searchSon->father = new node(father);
+        searchSon->father->gender = 1;
+        searchSon->father->level = searchSon->level + 1;
         return *this;
     }
     else{
@@ -88,6 +94,8 @@ Tree& Tree::addMother(string son, string mother){
 
     if(searchSon->mother == nullptr){
         searchSon->mother = new node(mother);
+        searchSon->mother->gender = 2;
+        searchSon->mother->level = searchSon->level + 1;
         return *this;
     }
     else{
@@ -95,12 +103,70 @@ Tree& Tree::addMother(string son, string mother){
     }
    
 }
+
+
+
 string Tree::relation(string name){
-    return " ";
+    node* n = search(name);
+    if(n == nullptr){
+        return "unrelated";
+    }
+    else{
+        if(n->level == 1 && n->gender == 1){
+            return "father";
+        }
+        else if(n->level == 1 && n->gender == 2){
+            return "mother";
+        }
+        else if(n->level == 2 && n->gender == 1){
+            return "grandfather";
+        }
+        else if(n->level == 2 && n->gender == 2){
+            return "grandmother";
+        }
+        else {
+            string great = "great-";
+            for(int i = 3; i < n->level; i++){
+                great += great;
+            }
+            if(n->gender == 1){
+                great = great + "grandfather";
+            }
+            if(n->gender == 2){
+                great = great + "grandmother";
+            }
+            return great;
+        }
+
+    }
+   
 }
+
+node* Tree::searchRelation(node* root, string name){
+
+    if(root!=nullptr){
+        
+        if(relation(root->name) == name){
+            return root;
+        }
+
+        node* s = searchRelation(root->father, name);
+        if(s != nullptr) return s;
+        else return searchRelation(root->mother, name);
+    }
+    else{
+        return nullptr;
+    }   
+}
+
 string Tree::find(string relation){
-    return " ";
+    node* _find = searchRelation(root, relation);
+    if(_find == nullptr){
+        throw invalid_argument("not found");
+    }
+    return _find->name;
 }
+
 void Tree::display(){
 
 }

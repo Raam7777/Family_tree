@@ -26,12 +26,12 @@ TEST_CASE("Related function"){//13
     CHECK( T.relation("Avraham") == string("great-grandfather"));
     CHECK( T.relation("Terah") == string("great-great-grandfather"));
     CHECK( T.relation("Raam") == string("unrelated"));
-    CHECK_THROWS(T.relation("Yaakov") == string("grandfather"));
-    CHECK_THROWS(T.relation("Rachel") == string("father"));
-    CHECK_THROWS(T.relation("Isaac") == string("grandmother"));
-    CHECK_THROWS(T.relation("Terah") == string("father"));
-    CHECK_THROWS(T.relation("Rivka") == string("great-great-grandmother"));
-    CHECK_THROWS(T.relation("Avraham") == string("great-great-grandfather"));
+   // CHECK_THROWS(T.relation("Yaakov") == string("grandfather"));
+   // CHECK_THROWS(T.relation("Rachel") == string("father"));
+   // CHECK_THROWS(T.relation("Isaac") == string("grandmother"));
+   // CHECK_THROWS(T.relation("Terah") == string("father"));
+   // CHECK_THROWS(T.relation("Rivka") == string("great-great-grandmother"));
+   // CHECK_THROWS(T.relation("Avraham") == string("great-great-grandfather"));
 }
 
 TEST_CASE("Find function"){//13
@@ -55,34 +55,34 @@ TEST_CASE("AddFather function"){ //10
 	Tree T = buildTree();
 	CHECK_THROWS(T.addFather("yaakov", "yaakovF"));
 	T.addFather("Rachel", "RachelF");
-	CHECK(T.find("father") == string("RachelF"));
-	CHECK(T.relation("RachelF") == string("father"));
+	CHECK((T.find("grandfather") == string("RachelF") || T.find("grandfather") == string("Isaac")));
+	CHECK(T.relation("RachelF") == string("grandfather"));
 	CHECK_THROWS(T.addFather("Isaac", "IsaacF"));
 	T.addFather("Rivka", "RivkaF");
-	CHECK(T.find("father") == string("RivkaF"));
-	CHECK(T.relation("RivkaF") == string("father"));
+	CHECK((T.find("great-grandfather") == string("RivkaF") || T.find("great-grandfather") == string("Avraham")));
+	CHECK(T.relation("RivkaF") == string("great-grandfather"));
 	CHECK_THROWS(T.addFather("Rivka", "RivkaFather"));
 	CHECK_THROWS(T.addFather("Yosef", "YosefF"));
 	T.addFather("Terah", "TerahF");
-	CHECK(T.find("father") == string("TerahF"));
-	CHECK(T.relation("TerahF") == string("father"));
+	CHECK(T.find("great-great-great-grandfather") == string("TerahF"));
+	CHECK(T.relation("TerahF") == string("great-great-great-grandfather"));
 }
 
 TEST_CASE("AddMother function"){//10
 	Tree T = buildTree();
 	CHECK_THROWS(T.addMother("yaakov", "yaakovM"));
 	T.addMother("Rachel", "RachelM");
-	CHECK(T.find("mother") == string("RachelM"));
-	CHECK(T.relation("RachelM") == string("mother"));
+	CHECK(T.find("grandmother") == string("RachelM"));
+	CHECK(T.relation("RachelM") == string("grandmother"));
 	CHECK_THROWS(T.addMother("Yosef", "YosefM"));
 	T.addMother("Rivka", "RivkaM");
-	CHECK(T.find("mother") == string("RivkaM"));
-	CHECK(T.relation("RivkaM") == string("mother"));
+	CHECK(T.find("great-grandmother") == string("RivkaM"));
+	CHECK(T.relation("RivkaM") == string("great-grandmother"));
 	CHECK_THROWS(T.addMother("Rivka", "RivkaMother"));
 	CHECK_THROWS(T.addMother("Yosef", "YosefM"));
 	T.addMother("Terah", "TerahM");
-	CHECK(T.find("mother") == string("TerahM"));
-	CHECK(T.relation("TerahM") == string("mother"));
+	CHECK(T.find("great-great-great-grandmother") == string("TerahM"));
+	CHECK(T.relation("TerahM") == string("great-great-great-grandmother"));
 }
 
 TEST_CASE("Remove function"){//21
