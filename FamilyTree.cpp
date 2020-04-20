@@ -1,17 +1,17 @@
 #include <iostream>
 #include <string>
-
 #include "FamilyTree.hpp"
 
 using namespace std;
 using namespace family;
 
-node::node(string name){
+node::node(std::string name){
     this->name = name;
     this->father = nullptr;
     this->mother = nullptr;
     this->gender = 0;
     this->level = 0;
+	this->del = false;
 
 }
 
@@ -21,7 +21,7 @@ Tree::Tree(string name){
 }
 
 Tree::~Tree(){
-   removeTree(root);
+  removeTree(root);
 }
 
 void Tree::removeTree(node* n){
@@ -29,7 +29,7 @@ void Tree::removeTree(node* n){
     if(n != nullptr){
         removeTree(n->mother);
         removeTree(n->father);
-        delete n;
+       delete n;
     }
     
 }
@@ -55,7 +55,7 @@ node* Tree::search(node* root, string name){
 
     node* sm = search(root->mother, name);
     if(sm != nullptr){
-        return sm;   
+            return sm;   
     }
 
     return nullptr;
@@ -74,6 +74,7 @@ Tree& Tree::addFather(string son, string father){
         searchSon->father = new node(father);
         searchSon->father->gender = 1;
         searchSon->father->level = searchSon->level + 1;
+		searchSon->del = false;
         return *this;
     }
     else{
@@ -96,6 +97,7 @@ Tree& Tree::addMother(string son, string mother){
         searchSon->mother = new node(mother);
         searchSon->mother->gender = 2;
         searchSon->mother->level = searchSon->level + 1;
+		searchSon->del = false;
         return *this;
     }
     else{
@@ -185,46 +187,25 @@ void Tree::display(){
 	cout << endl;
 }
 
-void Tree::removeNode(node* ptr){
-
-
-    if(ptr->father == nullptr && ptr->mother == nullptr){
-        
-        ptr=nullptr;
-        delete ptr;
-       
-        
-    }   
-    
-    else{
-        if(ptr->father != nullptr){
-               
-                removeNode(ptr->father);
-            
-        }
-        if(ptr->mother != nullptr){
-                
-                removeNode(ptr->mother);
-        }
-    }
-    
+void Tree::deleteNode(node** ptr) {
+	if (*ptr != NULL) {
+		deleteNode(&((*(ptr))->mother));
+		deleteNode(&((*(ptr))->father));
+		*ptr = nullptr;
+		delete *ptr;
+	}
 }
-
-void Tree::removeFindNode(node* root, string name){
-
-
-
-}
-
 void Tree::remove(string name){
-    
-    node* ptr = search(this->root,name);
-    if(ptr == NULL){
-        throw out_of_range("the name not exist");
-    }
-    else{
-        removeNode(ptr);
-    }
-    return;
+	node* current = search(name);
+	if (current == nullptr) {
+		throw out_of_range("dosn't exist");
+	}
+	if (current->name == this->root->name) {
+		throw invalid_argument("Can't delete the root");
+	}
+	node** cu = &current;
+	deleteNode(cu);
+	*cu = nullptr;
+	delete *cu;
 
 }
