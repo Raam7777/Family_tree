@@ -6,7 +6,6 @@ namespace family{
         std::string name;
         int gender;
         int level;
-		bool del;
         node *mother, *father;
         node(std::string name);
     };
@@ -20,7 +19,7 @@ namespace family{
         node* search(node* root, std::string name);
         node* searchRelation(node* root, std::string name);
         void removeNode(node* ptr);
-        void removeFindNode(node* ptr);
+        void removeFindNode(node* root, std::string name);
 		void inorder(node* root);
 
     public:
