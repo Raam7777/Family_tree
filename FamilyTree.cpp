@@ -186,27 +186,24 @@ void Tree::display(){
 }
 
 void Tree::removeNode(node* ptr){
-    int i=0;
-    cout<<1;
-    Tree* tree;
+
 
     if(ptr->father == nullptr && ptr->mother == nullptr){
-        cout<<5;
+        
         ptr=nullptr;
-        tree = new Tree(ptr->name);
         delete ptr;
-        cout<<6;
+       
         
     }   
     
     else{
         if(ptr->father != nullptr){
-                cout<<2;
+               
                 removeNode(ptr->father);
             
         }
         if(ptr->mother != nullptr){
-                cout<<3;
+                
                 removeNode(ptr->mother);
         }
     }
