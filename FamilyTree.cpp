@@ -219,6 +219,10 @@ node* Tree::removeNode(node* root, string name)
 void Tree::remove(string name){
    
     node* ptr = search(name);
+    if(this->root->name == name){
+        throw invalid_argument("not remove the root");
+    }
+
     if(ptr == NULL){
         throw out_of_range("the name not exist");
     }
