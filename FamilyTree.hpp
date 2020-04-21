@@ -14,13 +14,12 @@ namespace family{
     class Tree{
     private:
 
-        void removeTree(node* n);
         node* search(std::string name);
         node* search(node* root, std::string name);
         node* searchRelation(node* root, std::string name);
-        void removeNode(node* ptr);
-        void removeFindNode(node* root, std::string name);
-		void inorder(node* root);
+		void print(node* root, std::string name, int level);
+        void removeNode(node* root);
+        node* removeNode(node* root, std::string name);
 
     public:
         

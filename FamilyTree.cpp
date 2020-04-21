@@ -16,23 +16,18 @@ node::node(string name){
 }
 
 Tree::Tree(string name){
-    this->root = new node(name);
+    node* newNode = new node(name);
+    this->root = newNode;
+    this->root->father = nullptr;
+    this->root->mother = nullptr;
+    this->root->name = name;
 
 }
 
 Tree::~Tree(){
-   removeTree(root);
+   
 }
 
-void Tree::removeTree(node* n){
-    
-    if(n != nullptr){
-        removeTree(n->mother);
-        removeTree(n->father);
-        delete n;
-    }
-    
-}
 
 node* Tree::search(string name){
     return search(this->root, name);
@@ -172,59 +167,62 @@ string Tree::find(string relation){
     return _find->name;
 }
 
-void Tree::inorder(node* root) {
-	if (root != nullptr) {
-		inorder(root->father);
-		cout << root->name << ",";
-		inorder(root->mother);
-	}
+void Tree::print(node* root, string name, int level) {
+	if(root==nullptr){
+        return;
+    }
+    print(root->father, root->name, root->level);
+    print(root->mother, root->name, root->level);
+    cout << root->name << "->"<< root->level<< "   |   ";
+    if(root->name == name){
+        cout<<endl;
+    }
+    
+
 }
 
 void Tree::display(){
-	inorder(this->root);
-	cout << endl;
+	print(this->root,this->root->name,this->root->level);
+	
 }
 
-void Tree::removeNode(node* ptr){
+void Tree::removeNode(node* root)
+{
+    if(root==NULL)
+        return;
 
+    if(root->father==NULL&&root->mother==NULL)
+        delete(root);
 
-    if(ptr->father == nullptr && ptr->mother == nullptr){
-        
-        ptr=nullptr;
-        delete ptr;
-       
-        
-    }   
-    
-    else{
-        if(ptr->father != nullptr){
-               
-                removeNode(ptr->father);
-            
-        }
-        if(ptr->mother != nullptr){
-                
-                removeNode(ptr->mother);
-        }
+    removeNode(root->father);
+    removeNode(root->mother);
+}
+
+node* Tree::removeNode(node* root, string name)
+{
+    if(root==NULL)
+        return NULL;
+
+    if(root->name == name)
+    {
+        removeNode(root);
+        return NULL;
     }
+
+    root->father=removeNode(root->father,name);
+    root->mother=removeNode(root->mother,name);
+    return root;
     
 }
 
-void Tree::removeFindNode(node* root, string name){
-
-
-
-}
 
 void Tree::remove(string name){
-    
-    node* ptr = search(this->root,name);
+   
+    node* ptr = search(name);
     if(ptr == NULL){
         throw out_of_range("the name not exist");
     }
-    else{
-        removeNode(ptr);
-    }
-    return;
+
+    this->root=removeNode(this->root,name);
 
 }

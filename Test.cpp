@@ -13,13 +13,11 @@ Tree buildTree(){
 	 .addMother("Yaakov", "Rivka")
 	 .addFather("Isaac", "Avraham")
 	 .addFather("Avraham", "Terah");
+	 T.display();
      return T;
 
 }
-TEST_CASE("inorder") {
-	Tree T = buildTree();
-	//T.display();
-}
+
 
 
 TEST_CASE("Related function"){//13
@@ -91,7 +89,7 @@ TEST_CASE("AddMother function"){//10
 	CHECK(T.relation("TerahM") == string("great-great-great-grandmother"));
 }
 
-/*TEST_CASE("Remove function"){//21
+TEST_CASE("Remove function"){//21
     Tree T = buildTree();
 /*	
     T.remove("Yosef");
@@ -104,7 +102,7 @@ TEST_CASE("AddMother function"){//10
 
 
 
-*/	/*
+*/	
     T.remove("Isaac");
     CHECK( T.relation("Yaakov") == string("father"));
     CHECK( T.relation("Rachel") == string("mother"));
@@ -134,7 +132,7 @@ TEST_CASE("AddMother function"){//10
     CHECK_THROWS(T.remove("ruti"));
 	
 
-}*/
+}
 
 TEST_CASE("new tree function"){
     Tree T ("Yosef");
@@ -279,6 +277,8 @@ TEST_CASE("Yosef Tree case") {
 	CHECK_THROWS(T.addMother("Yaakov", "Ruti"));      // add to non-existent person
 	CHECK_THROWS(T.addFather("Rachel", "Avraham"));   // add to non-existent person
 	CHECK_THROWS(T.addMother("Rachel", "Ruti"));      // add to non-existent person
+
+	
 }
 
 
